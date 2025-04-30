@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Rossmann Sales Prediction</title>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-8">
+        <h1 class="text-4xl font-bold text-blue-600 mb-4">Rossmann Sales Prediction</h1>
+        <p class="text-gray-700 mb-4">In this project, we aim to predict sales for Rossmann stores using machine learning techniques. The sales prediction is a crucial task for any retail business as it helps in effective inventory management, resource allocation, and business planning.</p>
+
+        <hr class="my-8 border-gray-300">
+
+        {% if result %}
+            <button id="showPredictionButton" class="mb-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer">Show Prediction</button>
+        {% endif %}
+
+        <form action="/predict" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+                <label for="DayOfWeek" class="block text-gray-700 text-sm font-bold mb-2">DayOfWeek</label>
+                <input type="number" name="DayOfWeek" id="DayOfWeek" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="Customers" class="block text-gray-700 text-sm font-bold mb-2">Customers</label>
+                <input type="number" name="Customers" id="Customers" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="Open" class="block text-gray-700 text-sm font-bold mb-2">Open</label>
+                <input type="number" name="Open" id="Open" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="Promo" class="block text-gray-700 text-sm font-bold mb-2">Promo</label>
+                <input type="number" name="Promo" id="Promo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="StateHoliday" class="block text-gray-700 text-sm font-bold mb-2">StateHoliday</label>
+                <input type="number" name="StateHoliday" id="StateHoliday" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="SchoolHoliday" class="block text-gray-700 text-sm font-bold mb-2">SchoolHoliday</label>
+                <input type="number" name="SchoolHoliday" id="SchoolHoliday" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="Day" class="block text-gray-700 text-sm font-bold mb-2">Day</label>
+                <input type="number" name="Day" id="Day" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <label for="Month" class="block text-gray-700 text-sm font-bold mb-2">Month</label>
+                <input type="number" name="Month" id="Month" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="mb-4">
+                <input type="submit" name="submit" id="submit" value="Predict" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer">
+            </div>
+        </form>
+
+        <div id="predictionModal" class="modal hidden fixed inset-0 w-full h-full flex items-center justify-center z-50">
+            <div class="modal-box bg-white rounded-lg shadow-lg w-1/3">
+                <div class="modal-header bg-gray-300 p-2 rounded-t-lg">
+                    <h2 class="font-semibold">Prediction Result</h2>
+                </div>
+                <div class="modal-body p-4">
+                    <p>Prediction result is: <span id="predictionResult"></span></p>
+                </div>
+                <div class="modal-footer bg-gray-300 p-2 rounded-b-lg">
+                    <button id="closeModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("showPredictionButton").addEventListener("click", function () {
+            const prediction = "{{ result }}$";
+            document.getElementById("predictionResult").textContent = prediction;
+
+            const modal = document.getElementById("predictionModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        });
+
+        document.getElementById("closeModal").addEventListener("click", function () {
+            const modal = document.getElementById("predictionModal");
+            modal.classList.remove("flex");
+            modal.classList.add("hidden");
+        });
+    </script>
+</body>
+</html>
