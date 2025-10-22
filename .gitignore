@@ -139,3 +139,4 @@ dmypy.json
 cython_debug/
 
 05-deep-learning/Mask-Detection/dataset
+05-deep-learning/Cat-vs-Dog-Detection/dataset
