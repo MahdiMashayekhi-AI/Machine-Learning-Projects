@@ -27,7 +27,6 @@ mapping = {
     "Y": "ی"
 }
 
-# برای اینکه اول چندکاراکتری‌ها match شوند
 keys_sorted = sorted(mapping.keys(), key=len, reverse=True)
 
 def convert_label(label):

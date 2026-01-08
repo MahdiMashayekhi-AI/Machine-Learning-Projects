@@ -112,7 +112,7 @@ def train():
         writer = csv.writer(f)
         writer.writerow(["Epoch", "Train_Loss", "Val_Loss"])
 
-    print(f"🚀 Training started on {DEVICE}...")
+    print(f"Training started on {DEVICE}...")
     
     for epoch in range(EPOCHS):
         model.train()
@@ -123,7 +123,7 @@ def train():
         for imgs, texts in pbar:
             imgs = imgs.to(DEVICE)
 
-            # Encode labels (padding حذف می‌شود داخل converter)
+            # Encode labels
             targets, lengths = converter.encode(texts)
             targets = targets.to(DEVICE)
             lengths = lengths.to(DEVICE)
@@ -135,7 +135,7 @@ def train():
             log_probs = logits.log_softmax(2) # [B, T, C]
             log_probs = log_probs.permute(1, 0, 2)  # [T, B, C]
 
-            # === CTC input lengths (ثابت و درست) ===
+            # === CTC input lengths ===
             T = log_probs.size(0)
             input_lengths = torch.full(
                 size=(imgs.size(0),),

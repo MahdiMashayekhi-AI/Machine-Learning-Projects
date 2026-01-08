@@ -41,7 +41,6 @@ class CRNN(nn.Module):
 
         self.fc = nn.Linear(nh * 2, nclass)
 
-        # 🔥 مهم: penalize blank
         self.fc.bias.data[0] = -2.0
 
     def forward(self, x):
@@ -70,7 +69,6 @@ def main():
 
     dataset = PlateDataset("./dataset", "train")
 
-    # 🔥 فقط یک نمونه
     dataset.samples = dataset.samples[:1]
 
     loader = DataLoader(dataset, batch_size=1, shuffle=False)

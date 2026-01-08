@@ -4,6 +4,8 @@ import json
 import torch
 import numpy as np
 from ultralytics import YOLO
+from model import CRNN
+from converter import LabelConvertor
 
 # ================= CONFIG =================
 IMG_HEIGHT = 50
@@ -19,9 +21,6 @@ TEST_IMAGE = "./data/2.jpg"
 with open("classes.json", "r", encoding="utf-8") as f:
     CLASSES_LIST = json.load(f)["classes"]
 
-# ================= OCR MODEL =================
-from model import CRNN
-from converter import LabelConvertor
 
 ocr_model = CRNN(1, len(CLASSES_LIST) + 1).to(DEVICE)
 ocr_model.load_state_dict(torch.load(OCR_MODEL_PATH, map_location=DEVICE))
@@ -62,7 +61,6 @@ def ocr_predict(plate_img):
     x, debug_img = preprocess_plate(plate_img)
 
     # sanity check
-    # cv2.imwrite("./data/2_preprocessed.jpg", debug_img * 255)
     # cv2.imshow("ocr_input", debug_img)
     # cv2.waitKey(0)
 
