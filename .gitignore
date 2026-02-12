@@ -140,11 +140,17 @@ cython_debug/
 
 05-deep-learning/Mask-Detection/dataset
 05-deep-learning/Cat-vs-Dog-Detection/dataset
-05-deep-learning/Irananin-License-Plate-Recognition/OCR/dataset
-05-deep-learning/Irananin-License-Plate-Recognition/OCR/models
-05-deep-learning/Irananin-License-Plate-Recognition/OCR/Problems.txt
 
-05-deep-learning/Irananin-License-Plate-Recognition/Plate-Detection/dataset
-05-deep-learning/Irananin-License-Plate-Recognition/Plate-Detection/lpd_dataset
-05-deep-learning/Irananin-License-Plate-Recognition/Plate-Detection/outputs
-05-deep-learning/Irananin-License-Plate-Recognition/Plate-Detection/runs
+# Licence Plate Recognition
+**/data/ocr/raw/*
+!**/data/ocr/raw/.gitkeep
+
+**/data/detection/raw/*
+!**/data/detection/raw/.gitkeep
+
+**/experiments/ocr/*
+!**/experiments/ocr/.gitkeep
+
+*.pth
+
+**/old_Irananin-License-Plate-Recognition/*
