@@ -1,5 +1,7 @@
 import cv2
+import torch
 from core.detection.inference.predictor import Predictor
+from core.detection.models.yolo_detector import YoloDetector
 
 
 MODEL_PATH = "./models/detection/best.pt"
@@ -7,12 +9,21 @@ SOURCE = 0
 # SOURCE = "./data/detection/samples/image-1.jpg"
 CONF_THRESHOLD = 0.25
 SKIP_FRAMES = 2
+DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
+
+detector = YoloDetector(MODEL_PATH, DEVICE)
+predictor = Predictor(detector)
+
+cap = cv2.VideoCapture(SOURCE)
+frame_count = 0
+last_results = []
+is_image = str(SOURCE).lower().endswith((".jpg", ".png", "jpeg"))
 
 def draw_detections(image, detections):
   for det in detections:
-    x1, y1, x2, y2 = det["coordinates"]
-    conf = det["confidence"]
+    x1, y1, x2, y2 = det["bbox"]
+    conf = det["conf"]
 
     cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
@@ -20,14 +31,6 @@ def draw_detections(image, detections):
     cv2.putText(image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
   
   return image
-
-
-predictor = Predictor(MODEL_PATH)
-cap = cv2.VideoCapture(SOURCE)
-
-frame_count = 0
-is_image = str(SOURCE).lower().endswith((".jpg", ".png", "jpeg"))
-last_results = []
 
 
 while True:
