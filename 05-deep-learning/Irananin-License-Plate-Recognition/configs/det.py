@@ -5,7 +5,12 @@ CONF_THRESHOLD = 0.25
 TRAIN_CONFIG = {
   "data" : "./data/detection/raw/data.yaml",
   "epochs" : 100,
-  "batch" : 32,
+  "batch" : 16,
   "imgsz" : 640,
   "save" : True,
+  "workers" : 0,
+  "patience" : 20,
+  "pretrained" : True,
+  "optimizer" : 'auto',
+  "verbose" : True,
 }
