@@ -7,7 +7,7 @@ from core.ocr.models.crnn import CRNN
 from core.ocr.training.trainer import Trainer
 from core.ocr.training.train import train
 from core.ocr.training.validate import validate
-from core.ocr.data.lablel_convertor import LabelConvertor
+from core.ocr.data.label_converter import LabelConvertor
 from core.ocr.data.dataset import PlateDataset
 from core.ocr.losses.ctc_loss import build_ctc_loss
 from core.ocr.utils.weights import weights_init
@@ -22,10 +22,10 @@ DATASET_DIR = ocr.DATASET_DIR
 BATCH_SIZE = ocr.BATCH_SIZE
 EPOCHS = ocr.EPOCHS
 LR = ocr.LR
-DEVICE = ocr.DEVICE
+DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 exp_path = create_experiment("./experiments/ocr")
-LOGGER_DIR = os.path.join(exp_path, ocr.LOGEER_DIR)
+LOGGER_DIR = os.path.join(exp_path, ocr.LOGGER_DIR)
 CHECKPOINT_DIR = os.path.join(exp_path, ocr.CHECKPOINT_DIR)
 
 RESUME = False
@@ -42,11 +42,8 @@ convertor = LabelConvertor(classes)
 train_ds = PlateDataset(DATASET_DIR, "train")
 test_ds = PlateDataset(DATASET_DIR, "test")
 
-# small_train_ds = torch.utils.data.Subset(train_ds, range(32)) # For test
-# small_test_ds = torch.utils.data.Subset(test_ds, range(32)) # For test
-
-train_loader = DataLoader(train_ds, BATCH_SIZE, True) # For test
-test_loader = DataLoader(test_ds, BATCH_SIZE, False) # For test
+train_loader = DataLoader(train_ds, BATCH_SIZE, True) 
+test_loader = DataLoader(test_ds, BATCH_SIZE, False)
 
 criterion = build_ctc_loss(blank=0)
 

@@ -3,7 +3,7 @@ import json
 import torch
 from configs import ocr
 from core.ocr.models.crnn import CRNN
-from core.ocr.data.lablel_convertor import LabelConvertor
+from core.ocr.data.label_converter import LabelConvertor
 from core.ocr.data.transforms import preprocess_image
 from core.ocr.inference.predictor import Predictor
 from core.ocr.inference.postprocess import postprocess
@@ -11,7 +11,7 @@ from core.ocr.inference.postprocess import postprocess
 
 MODEL_PATH = os.path.join(ocr.EXPERIMENT_ROOT, "exp_001/checkpoints/best.pth")
 CLASSES_PATH = ocr.CLASSES_PATH
-DEVICE = ocr.DEVICE
+DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 
 with open(CLASSES_PATH, "r", encoding="utf-8") as f:

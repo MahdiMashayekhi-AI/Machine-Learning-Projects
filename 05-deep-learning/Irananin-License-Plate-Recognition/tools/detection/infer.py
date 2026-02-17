@@ -22,8 +22,8 @@ is_image = str(SOURCE).lower().endswith((".jpg", ".png", "jpeg"))
 
 def draw_detections(image, detections):
   for det in detections:
-    x1, y1, x2, y2 = det["bbox"]
-    conf = det["conf"]
+    x1, y1, x2, y2 = det.bbox
+    conf = det.conf
 
     cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
