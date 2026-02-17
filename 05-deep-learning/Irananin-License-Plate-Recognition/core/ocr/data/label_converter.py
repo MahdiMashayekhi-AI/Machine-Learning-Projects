@@ -5,7 +5,7 @@ PAD_CHAR = ocr.PAD_CHAR
 MAX_LABEL_LEN = ocr.MAX_LABEL_LEN
 
 
-class LabelConvertor:
+class LabelConverter:
   def __init__(self, classes_list, pad_char=PAD_CHAR, max_len= MAX_LABEL_LEN):
     self.classes_list = classes_list
     self.pad_char = pad_char
