@@ -1,10 +1,12 @@
+import numpy as np
+
 class BaseDetector: 
   
   def train(self, **kwargs):
     raise NotImplementedError
   
 
-  def predict(self, image, conf):
+  def predict(self, image: np.ndarray, conf):
     raise NotImplementedError
   
 
@@ -13,8 +15,4 @@ class BaseDetector:
   
 
   def export(self, format):
-    raise NotImplementedError
-  
-
-  def load(self, path):
     raise NotImplementedError
