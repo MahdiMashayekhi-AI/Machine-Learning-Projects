@@ -1,5 +1,7 @@
+import numpy as np
 from ultralytics import YOLO
 from core.detection.models.base_detector import BaseDetector
+from core.entities.detection import DetectionResult
 
 
 class YoloDetector(BaseDetector):
@@ -14,17 +16,19 @@ class YoloDetector(BaseDetector):
     return self._model.train(**kwargs)
   
 
-  def predict(self, image, conf):
+  def predict(self, image: np.ndarray, conf):
     results = self._model.predict(image, conf=conf, device=self.device)
 
     outputs = []
     for result in results:
       for box in result.boxes:
         x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
-        outputs.append({
-          "bbox": (x1, y1, x2, y2),
-          "conf": box.conf.item(),
-        })
+
+        outputs.append(DetectionResult(
+          bbox=(x1, y1, x2, y2),
+          conf=box.conf.item(),
+          class_id=int(box.cls.item()),
+        ))
     
     return outputs
   
