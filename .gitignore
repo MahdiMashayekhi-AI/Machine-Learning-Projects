@@ -153,5 +153,8 @@ cython_debug/
 !**/experiments/ocr/.gitkeep
 
 *.pth
+*.pt
+
+**/runs/*
 
 **/old_Irananin-License-Plate-Recognition/*
