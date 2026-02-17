@@ -13,8 +13,7 @@ class Predictor:
     images = images.to(self.device)
 
     logits = self.model(images)
-    log_probs = logits.log_softmax(2).permute(1, 0, 2)
-
+    
     texts = self.convertor.decode(logits)
     return texts
     
