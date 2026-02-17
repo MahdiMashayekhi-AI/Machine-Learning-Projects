@@ -13,8 +13,8 @@ def validate(model, dataloader, convertor, criterion, device):
     pbar = tqdm(dataloader, desc=f"Validating: ")
     for images, texts in pbar:
       images = images.to(device)
-      targets, lengthes = convertor.encode(texts)
-      targets, lengthes = targets.to(device), lengthes.to(device)
+      targets, lengths = convertor.encode(texts)
+      targets, lengths = targets.to(device), lengths.to(device)
 
       logits = model(images)
       log_probs = logits.log_softmax(2).permute(1, 0, 2)
@@ -26,7 +26,7 @@ def validate(model, dataloader, convertor, criterion, device):
         device=device
       )
 
-      loss = criterion(log_probs, targets, input_lengths, lengthes)
+      loss = criterion(log_probs, targets, input_lengths, lengths)
       total_loss += loss.item()
 
       preds = convertor.decode(logits)
