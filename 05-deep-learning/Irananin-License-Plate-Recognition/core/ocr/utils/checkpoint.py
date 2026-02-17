@@ -16,7 +16,7 @@ class Checkpoint:
       "epoch": epoch,
       "model": model.state_dict(),
       "optimizer": optimizer.state_dict(),
-      "scheuler": scheduler,
+      "scheduler": scheduler.state_dict(),
       "best_loss": best_loss,
     }, self.last_path)
 
@@ -26,7 +26,7 @@ class Checkpoint:
       "epoch": epoch,
       "model": model.state_dict(),
       "optimizer": optimizer.state_dict(),
-      "scheuler": scheduler,
+      "scheduler": scheduler.state_dict(),
       "metric": metric,
       "best_loss": best_loss,
     }, self.best_path)
