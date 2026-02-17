@@ -3,8 +3,8 @@ def postprocess(texts):
 
   for t in texts:
     t = t.strip()
-    t.replace(" ", "")
-    t.replace("_", "")
+    t = t.replace(" ", "")
+    t = t.replace("_", "")
 
     results.append(t)
 
