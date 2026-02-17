@@ -5,10 +5,15 @@ from configs import ocr
 
 IMAGE_SIZE = ocr.IMAGE_SIZE
 
-def preprocess_image(img_path):
-  img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+def preprocess_image(image):
+  if len(image.shape) == 3:
+        img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  else:
+      img = image.copy()
+
   img = cv2.resize(img, IMAGE_SIZE)
   img = img / 255.0
   img = (img - 0.5) / 0.5
+  img = np.expand_dims(img, 0)
   img = np.expand_dims(img, 0)
   return torch.from_numpy(img).to(torch.float32)
