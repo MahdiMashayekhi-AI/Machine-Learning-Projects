@@ -55,7 +55,7 @@ class Trainer:
       if len(val_output["preds"]) > 0:
         preds = val_output["preds"][0]
 
-      print(f"Sample -> GT: {val_output["targets"][0]} | PR: {preds}")
+      print(f"Sample -> GT: {val_output['targets'][0]} | PR: {preds}")
 
       self.scheduler.step(val_output["loss"])
 
