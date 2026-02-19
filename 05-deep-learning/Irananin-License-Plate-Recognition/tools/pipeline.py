@@ -3,13 +3,14 @@ import json
 import torch
 from configs import ocr
 from core.pipeline import Pipeline
-from core.detection.inference.predictor import Predictor as DetPredictor
+from core.detection.inference.predictor import DetPredictor
 from core.detection.models.yolo_detector import YoloDetector
 from core.ocr.models.crnn import CRNN
 from core.ocr.data.label_converter import LabelConverter
-from core.ocr.inference.predictor import Predictor as OCRPredictor
+from core.ocr.inference.predictor import OCRPredictor
+from core.visualization.drawer import Drawer
 
-IMAGE_PATH = "./data/detection/samples/image-1.jpg"
+IMAGE_PATH = "./data/detection/samples/1.jpg"
 DET_MODEL_PATH = "./models/detection/best.pt"
 OCR_MODEL_PATH = "./models/ocr/best.pth"
 CLASSES_PATH = ocr.CLASSES_PATH
@@ -27,10 +28,73 @@ model = CRNN(1, len(classes)+1).to(DEVICE)
 model.load_state_dict(torch.load(OCR_MODEL_PATH, map_location=DEVICE)["model"])
 
 convertor = LabelConverter(classes)
-
 ocr = OCRPredictor(model, convertor, DEVICE)
 
-image = cv2.imread(IMAGE_PATH)
 
-pipeline = Pipeline(det=det, ocr=ocr, threshold=0.25)
-print(pipeline.run(image))
+def run_image(path, pipeline, drawer):
+    frame = cv2.imread(path)
+
+    results = pipeline.process_frame(frame)
+
+    frame = drawer.draw(frame, results)
+
+    cv2.imshow("Result", frame)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+def run_video(path, pipeline, drawer):
+    cap = cv2.VideoCapture(path)
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        results = pipeline.process_frame(frame)
+        frame = drawer.draw(frame, results)
+
+        cv2.imshow("Video", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+def run_webcam(pipeline, drawer):
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+
+        results = pipeline.process_frame(frame)
+        frame = drawer.draw(frame, results)
+
+        cv2.imshow("Webcam", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    pipeline = Pipeline(detector, ocr, threshold=0.25)
+    drawer = Drawer()
+
+    mode = "webcam"  # image | video | webcam
+
+    if mode == "image":
+        run_image(IMAGE_PATH, pipeline, drawer)
+
+    elif mode == "video":
+        run_video("test.mp4", pipeline, drawer)
+
+    elif mode == "webcam":
+        run_webcam(pipeline, drawer)
