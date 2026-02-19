@@ -16,8 +16,8 @@ class YoloDetector(BaseDetector):
     return self._model.train(**kwargs)
   
 
-  def predict(self, image: np.ndarray, conf):
-    results = self._model.predict(image, conf=conf, device=self.device)
+  def predict(self, image: np.ndarray):
+    results = self._model.predict(image, conf=0.01, device=self.device)
 
     outputs = []
     for result in results:
