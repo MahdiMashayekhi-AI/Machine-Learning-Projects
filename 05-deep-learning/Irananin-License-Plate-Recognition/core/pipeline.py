@@ -1,32 +1,34 @@
 from core.entities.pipeline import PipelineResult
+from core.ocr.inference.postprocess import PlateValidator
 
 class Pipeline:
   def __init__(self, det, ocr, threshold=0.25):
     self.det = det
     self.ocr = ocr
     self.threshold = threshold
+    self.validator = PlateValidator()
 
-  def run(self, image) -> list[PipelineResult]:
+  def process_frame(self, frame) -> list[PipelineResult]:
     outputs: list[PipelineResult] = []
-    detections = self.det.predict(image, conf=self.threshold)
+    detections = self.det.predict(frame)
 
     if len(detections) > 0:
       for det in detections:
-        if det.conf > self.threshold:
+        if det.conf >= self.threshold:
 
-          cropped_img = self._cropper(image, det.bbox)
+          cropped_img = self._cropper(frame, det.bbox)
           if cropped_img is None:
             continue
 
           ocr_result = self.ocr.predict(cropped_img)
-          if not ocr_result.text:
+          if not ocr_result.text or not self.validator.validate(ocr_result):
             continue
 
           outputs.append(PipelineResult(
             bbox=det.bbox,
             text=ocr_result.text,
             det_conf=det.conf,
-            ocr_conf=None)
+            ocr_conf=ocr_result.conf)
           )
 
     outputs.sort(key=lambda x: x.det_conf, reverse=True)
