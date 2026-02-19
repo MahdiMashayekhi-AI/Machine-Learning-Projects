@@ -1,12 +1,13 @@
 import os
+import cv2  
 import json
 import torch
 from configs import ocr
 from core.ocr.models.crnn import CRNN
-from core.ocr.data.label_converter import LabelConvertor
+from core.ocr.data.label_converter import LabelConverter
 from core.ocr.data.transforms import preprocess_image
-from core.ocr.inference.predictor import Predictor
-from core.ocr.inference.postprocess import postprocess
+from core.ocr.inference.predictor import OCRPredictor
+from core.ocr.inference.postprocess import PlateValidator
 
 
 MODEL_PATH = os.path.join(ocr.EXPERIMENT_ROOT, "exp_001/checkpoints/best.pth")
@@ -21,21 +22,20 @@ with open(CLASSES_PATH, "r", encoding="utf-8") as f:
 model = CRNN(1, len(classes)+1).to(DEVICE)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE)["model"])
 
-convertor = LabelConvertor(classes)
+convertor = LabelConverter(classes)
 
-predictor = Predictor(model, convertor, DEVICE)
+predictor = OCRPredictor(model, convertor, DEVICE)
 
+validator = PlateValidator()
 
-def run_inference(img_path):
-  image = preprocess_image(img_path)
-  image = image.unsqueeze(0)
+def run_inference(image):
+  result = predictor.predict(image)
+  preds = validator.normalize(result.text)
 
-  preds = predictor.predict(image)
-  preds = postprocess(preds)
-
-  return preds[0]
+  return preds
 
 
 if __name__ == "__main__":
-  img = "./data/ocr/samples/8_plate.jpg"
-  print(run_inference(img))
+  img_path = "./data/ocr/samples/1_plate.jpg"
+  image = cv2.imread(img_path)
+  print(run_inference(image))

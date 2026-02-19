@@ -1,6 +1,6 @@
 import cv2
 import torch
-from core.detection.inference.predictor import Predictor
+from core.detection.inference.predictor import DetPredictor
 from core.detection.models.yolo_detector import YoloDetector
 
 
@@ -12,8 +12,8 @@ SKIP_FRAMES = 2
 DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 
-detector = YoloDetector(MODEL_PATH, DEVICE)
-predictor = Predictor(detector)
+detector = YoloDetector(MODEL_PATH, CONF_THRESHOLD, DEVICE)
+predictor = DetPredictor(detector)
 
 cap = cv2.VideoCapture(SOURCE)
 frame_count = 0
@@ -42,7 +42,7 @@ while True:
     frame = cv2.flip(frame, 1)
 
   if is_image or (frame_count % (SKIP_FRAMES + 1) == 0):
-    last_results = predictor.predict(frame, conf=CONF_THRESHOLD)
+    last_results = predictor.predict(frame)
 
   frame = draw_detections(frame, last_results)
 
