@@ -1,5 +1,3 @@
-import torch
-
 PAD_CHAR = "_"
 MAX_LABEL_LEN = 8
 IMAGE_SIZE = (200, 50)
