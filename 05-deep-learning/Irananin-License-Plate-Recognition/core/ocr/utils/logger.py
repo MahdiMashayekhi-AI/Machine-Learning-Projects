@@ -1,12 +1,11 @@
 import os
 import csv
-from configs.ocr import LOGGER_FILE
 
 
 class Logger:
   def __init__(self, dir_path, print_console=False):
     self.dir_path = dir_path
-    self.path = os.path.join(dir_path, LOGGER_FILE)
+    self.path = os.path.join(dir_path, "results.csv")
     self.print_console = print_console
 
     self.header = [
