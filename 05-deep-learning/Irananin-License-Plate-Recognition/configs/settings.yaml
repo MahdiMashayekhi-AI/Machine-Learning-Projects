@@ -1,0 +1,36 @@
+detection:
+  model_path: "./models/detection/best.pt"
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  skip_frames: 2
+  training:
+    data : "./data/detection/raw/data.yaml"
+    epochs : 50
+    batch : 16
+    imgsz : 640
+    save : True
+    workers : 0
+    patience : 10
+    pretrained : True
+    optimizer : auto
+    resume: False
+    verbose : True
+
+ocr:
+  model_path: "./models/ocr/best.pth"
+  classes_path: "./configs/classes.json"
+  conf_threshold: 0.7
+  image_size: [200, 50]
+  pad_char: _
+  max_label_len: 8
+  batch_size: 64
+  epoch: 25
+  resume_training: False
+  lr: 1e-3
+
+
+dirs:
+  logs: "./logs"
+  dataset: "./data/ocr/raw"
+  experiments: "./experiments/ocr"
+  checkpoints: "./checkpoints"
