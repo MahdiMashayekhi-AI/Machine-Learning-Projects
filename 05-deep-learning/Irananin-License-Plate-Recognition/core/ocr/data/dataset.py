@@ -1,10 +1,10 @@
 import os
 from torch.utils.data import Dataset
 from core.ocr.data.transforms import preprocess_image
-from configs import ocr
+from configs.config_loader import cfg
 
-PAD_CHAR = ocr.PAD_CHAR
-MAX_LABEL_LEN = ocr.MAX_LABEL_LEN
+PAD_CHAR = cfg['ocr']['pad_char']
+MAX_LABEL_LEN = cfg['ocr']['max_label_len']
 
 
 class PlateDataset(Dataset):

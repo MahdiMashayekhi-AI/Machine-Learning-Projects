@@ -1,9 +1,9 @@
 import cv2
 import torch
 import numpy as np
-from configs import ocr 
+from configs.config_loader import cfg
 
-IMAGE_SIZE = ocr.IMAGE_SIZE
+IMAGE_SIZE = cfg['ocr']['image_size']
 
 def preprocess_image(image):
   if len(image.shape) == 3:

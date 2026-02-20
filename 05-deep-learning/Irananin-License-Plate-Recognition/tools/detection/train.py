@@ -1,8 +1,10 @@
 import torch
-from core.detection.models.yolo_detector import YoloDetector
+from configs.config_loader import cfg
 from core.detection.training.trainer import Trainer
-from configs.det import MODEL_PATH, TRAIN_CONFIG
+from core.detection.models.yolo_detector import YoloDetector
 
+MODEL_PATH = cfg["detection"]["model_path"]
+TRAIN_CONFIG = cfg["detection"]["training"]
 DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 

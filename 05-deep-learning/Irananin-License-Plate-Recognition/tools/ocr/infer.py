@@ -2,7 +2,7 @@ import os
 import cv2  
 import json
 import torch
-from configs import ocr
+from configs.config_loader import cfg
 from core.ocr.models.crnn import CRNN
 from core.ocr.data.label_converter import LabelConverter
 from core.ocr.data.transforms import preprocess_image
@@ -10,8 +10,8 @@ from core.ocr.inference.predictor import OCRPredictor
 from core.ocr.inference.postprocess import PlateValidator
 
 
-MODEL_PATH = os.path.join(ocr.EXPERIMENT_ROOT, "exp_001/checkpoints/best.pth")
-CLASSES_PATH = ocr.CLASSES_PATH
+MODEL_PATH = cfg["ocr"]["model_path"]
+CLASSES_PATH = cfg["ocr"]["classes_path"]
 DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -30,9 +30,7 @@ validator = PlateValidator()
 
 def run_inference(image):
   result = predictor.predict(image)
-  preds = validator.normalize(result.text)
-
-  return preds
+  return validator.normalize(result.text)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import cv2
 import json
 import torch
-from configs import ocr
+from configs.config_loader import cfg
 from core.pipeline import Pipeline
 from core.detection.inference.predictor import DetPredictor
 from core.detection.models.yolo_detector import YoloDetector
@@ -10,10 +10,10 @@ from core.ocr.data.label_converter import LabelConverter
 from core.ocr.inference.predictor import OCRPredictor
 from core.visualization.drawer import Drawer
 
-IMAGE_PATH = "./data/detection/samples/1.jpg"
-DET_MODEL_PATH = "./models/detection/best.pt"
-OCR_MODEL_PATH = "./models/ocr/best.pth"
-CLASSES_PATH = ocr.CLASSES_PATH
+IMAGE_PATH = "./data/detection/samples/2.jpg"
+DET_MODEL_PATH = cfg["detection"]["model_path"]
+OCR_MODEL_PATH = cfg["ocr"]["model_path"]
+CLASSES_PATH = cfg["ocr"]["classes_path"]
 DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 with open(CLASSES_PATH, "r", encoding="utf-8") as f:
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     pipeline = Pipeline(detector, ocr, threshold=0.25)
     drawer = Drawer()
 
-    mode = "webcam"  # image | video | webcam
+    mode = "image"  # image | video | webcam
 
     if mode == "image":
         run_image(IMAGE_PATH, pipeline, drawer)

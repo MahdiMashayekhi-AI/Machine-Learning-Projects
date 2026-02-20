@@ -1,18 +1,17 @@
 import cv2
 import torch
+from configs.config_loader import cfg
 from core.detection.inference.predictor import DetPredictor
 from core.detection.models.yolo_detector import YoloDetector
 
 
-MODEL_PATH = "./models/detection/best.pt"
 SOURCE = 0
-# SOURCE = "./data/detection/samples/image-1.jpg"
-CONF_THRESHOLD = 0.25
-SKIP_FRAMES = 2
+MODEL_PATH = cfg["detection"]["model_path"]
+SKIP_FRAMES = cfg["detection"]["skip_frames"]
 DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
 
 
-detector = YoloDetector(MODEL_PATH, CONF_THRESHOLD, DEVICE)
+detector = YoloDetector(MODEL_PATH, DEVICE)
 predictor = DetPredictor(detector)
 
 cap = cv2.VideoCapture(SOURCE)
