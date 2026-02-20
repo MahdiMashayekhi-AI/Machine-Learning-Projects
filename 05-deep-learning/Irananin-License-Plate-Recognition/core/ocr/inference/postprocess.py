@@ -9,9 +9,10 @@ class PlateValidator:
   
   def normalize(self, text):
     results = ""
+    
+    text = text.strip()
 
     for t in text:
-      t = t.strip()
       t = t.replace(" ", "")
       t = t.replace("_", "")
 
