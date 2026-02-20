@@ -2,6 +2,10 @@ import numpy as np
 from ultralytics import YOLO
 from core.detection.models.base_detector import BaseDetector
 from core.entities.detection import DetectionResult
+from configs.config_loader import cfg
+
+
+IOU_THRESHOLD = cfg["detection"]["iou_threshold"]
 
 
 class YoloDetector(BaseDetector):
@@ -17,7 +21,7 @@ class YoloDetector(BaseDetector):
   
 
   def predict(self, image: np.ndarray):
-    results = self._model.predict(image, conf=0.01, device=self.device)
+    results = self._model.predict(image, conf=0.01,iou=IOU_THRESHOLD, device=self.device)
 
     outputs = []
     for result in results:
