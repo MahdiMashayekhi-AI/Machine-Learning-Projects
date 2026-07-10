@@ -3,7 +3,6 @@ class Trainer:
     self._detector = detector
     self._config = config
 
-  
   def train(self):
     self._detector.train(**self._config)
     return self._detector.validate()
